@@ -1,24 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { listExams, loadExam } from '../examLoader.js';
+
+const exams = listExams();
 
 export default function ExamList({ onSelect }) {
-  const [exams, setExams] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [starting, setStarting] = useState(null);
-
-  useEffect(() => {
-    fetch('/api/exams')
-      .then(r => r.json())
-      .then(setExams)
-      .catch(() => setError('No se pudieron cargar los exámenes.'))
-      .finally(() => setLoading(false));
-  }, []);
 
   async function handleSelect(name) {
     setStarting(name);
     try {
-      const res = await fetch(`/api/exams/${name}`);
-      const data = await res.json();
+      const data = await loadExam(name);
       onSelect(data);
     } catch {
       setError('No se pudo cargar el examen.');
@@ -27,7 +19,6 @@ export default function ExamList({ onSelect }) {
     }
   }
 
-  if (loading) return <Skeleton />;
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
@@ -66,12 +57,4 @@ export default function ExamList({ onSelect }) {
   );
 }
 
-function Skeleton() {
-  return (
-    <div className="space-y-3 animate-pulse">
-      {[1, 2, 3].map(i => (
-        <div key={i} className="h-16 rounded-xl bg-zinc-200" />
-      ))}
-    </div>
-  );
-}
+
