@@ -9,19 +9,21 @@ export default function Results({ exam, answers, onRestart, onBack }) {
   let wrong = 0;
   let skipped = 0;
   let annulled = 0;
+  let noSolutionCount = 0;
 
   questions.forEach(q => {
     const userAns = answers[q.number];
     const correctAns = solutions?.[q.number];
 
-    if (correctAns === 'anulada') { annulled++; return; }
+    if (correctAns === 'null') { annulled++; return; }
+    if (hasSolutions && correctAns === undefined) { noSolutionCount++; return; }
     if (!userAns) { skipped++; return; }
     if (!hasSolutions) return;
     if (userAns === correctAns) correct++;
     else wrong++;
   });
 
-  const scored = questions.length - annulled;
+  const scored = questions.length - annulled - noSolutionCount;
   const pct = scored > 0 ? Math.round((correct / scored) * 100) : null;
 
   return (
@@ -79,13 +81,15 @@ export default function Results({ exam, answers, onRestart, onBack }) {
         {questions.map(q => {
           const userAns = answers[q.number];
           const correctAns = solutions?.[q.number];
-          const isAnnulled = correctAns === 'anulada';
-          const isCorrect = hasSolutions && !isAnnulled && userAns === correctAns;
-          const isWrong = hasSolutions && !isAnnulled && userAns && userAns !== correctAns;
+          const isAnnulled = correctAns === 'null';
+          const noSolution = hasSolutions && correctAns === undefined;
+          const isCorrect = hasSolutions && !isAnnulled && !noSolution && userAns === correctAns;
+          const isWrong = hasSolutions && !isAnnulled && !noSolution && userAns && userAns !== correctAns;
           const isSkipped = !userAns;
 
           let borderColor = 'border-zinc-200';
           if (isAnnulled) borderColor = 'border-amber-300';
+          else if (noSolution) borderColor = 'border-zinc-200';
           else if (isCorrect) borderColor = 'border-emerald-400';
           else if (isWrong) borderColor = 'border-red-400';
           else if (isSkipped && hasSolutions) borderColor = 'border-zinc-300';
@@ -100,7 +104,7 @@ export default function Results({ exam, answers, onRestart, onBack }) {
                   <span className="mr-2 text-zinc-400">#{q.number}</span>
                   {q.text}
                 </p>
-                <Badge isAnnulled={isAnnulled} isCorrect={isCorrect} isWrong={isWrong} isSkipped={isSkipped} hasSolutions={hasSolutions} />
+                <Badge isAnnulled={isAnnulled} isCorrect={isCorrect} isWrong={isWrong} isSkipped={isSkipped} noSolution={noSolution} hasSolutions={hasSolutions} />
               </div>
 
               <ul className="space-y-1">
@@ -111,7 +115,8 @@ export default function Results({ exam, answers, onRestart, onBack }) {
                   let cls = 'border-zinc-100 bg-zinc-50 text-zinc-500';
                   if (isAnswer && isSelected) cls = 'border-emerald-400 bg-emerald-50 text-emerald-700 font-semibold';
                   else if (isAnswer) cls = 'border-emerald-300 bg-emerald-50 text-emerald-700 font-semibold';
-                  else if (isSelected && !isAnswer) cls = 'border-red-300 bg-red-50 text-red-600';
+                  else if (isSelected && !isAnswer && !noSolution) cls = 'border-red-300 bg-red-50 text-red-600';
+                  else if (isSelected && noSolution) cls = 'border-indigo-200 bg-indigo-50 text-indigo-600';
 
                   return (
                     <li key={opt.letter} className={`flex items-start gap-2 rounded-lg border px-3 py-2 text-xs ${cls}`}>
@@ -139,8 +144,9 @@ function Stat({ label, value, color }) {
   );
 }
 
-function Badge({ isAnnulled, isCorrect, isWrong, isSkipped, hasSolutions }) {
+function Badge({ isAnnulled, isCorrect, isWrong, isSkipped, noSolution, hasSolutions }) {
   if (isAnnulled) return <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">Anulada</span>;
+  if (noSolution) return <span className="shrink-0 rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-500">Sin solución</span>;
   if (isCorrect) return <span className="shrink-0 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700">Correcta</span>;
   if (isWrong) return <span className="shrink-0 rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-600">Incorrecta</span>;
   if (isSkipped && hasSolutions) return <span className="shrink-0 rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-500">Sin responder</span>;

@@ -1,9 +1,8 @@
 import { useState } from 'react';
 
-const LETTERS = ['a', 'b', 'c', 'd'];
-
 export default function Quiz({ exam, onSubmit, onBack }) {
   const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState('next');
   const [answers, setAnswers] = useState({});
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -18,7 +17,9 @@ export default function Quiz({ exam, onSubmit, onBack }) {
   }
 
   function goTo(index) {
-    setCurrent(Math.max(0, Math.min(total - 1, index)));
+    const clamped = Math.max(0, Math.min(total - 1, index));
+    setDirection(clamped > current ? 'next' : 'prev');
+    setCurrent(clamped);
   }
 
   function handleSubmit() {
@@ -52,40 +53,8 @@ export default function Quiz({ exam, onSubmit, onBack }) {
         />
       </div>
 
-      {/* Question card */}
-      <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
-        <p className="mb-1 text-xs font-medium uppercase tracking-widest text-zinc-400">
-          Pregunta {current + 1} / {total}
-        </p>
-        <p className="mb-6 text-base font-medium leading-relaxed">{q.text}</p>
-
-        <ul className="space-y-2">
-          {q.options.map(opt => {
-            const selected = answers[q.number] === opt.letter;
-            return (
-              <li key={opt.letter}>
-                <button
-                  onClick={() => select(opt.letter)}
-                  className={`flex w-full items-start gap-3 rounded-xl border px-4 py-3 text-left text-sm transition
-                    ${selected
-                      ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                      : 'border-zinc-200 hover:border-indigo-300 hover:bg-zinc-50'
-                    }`}
-                >
-                  <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-xs font-semibold
-                    ${selected ? 'border-indigo-500 bg-indigo-500 text-white' : 'border-zinc-300 text-zinc-500'}`}>
-                    {opt.letter.toUpperCase()}
-                  </span>
-                  <span>{opt.text}</span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-
       {/* Navigation */}
-      <div className="mt-6 flex items-center justify-between gap-3">
+      <div className="mb-4 flex items-center justify-between gap-3">
         <button
           onClick={() => goTo(current - 1)}
           disabled={current === 0}
@@ -94,31 +63,71 @@ export default function Quiz({ exam, onSubmit, onBack }) {
           ← Anterior
         </button>
 
-        {current < total - 1 ? (
-          <button
-            onClick={() => goTo(current + 1)}
-            className="rounded-lg bg-indigo-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
-          >
-            Siguiente →
-          </button>
-        ) : (
-          <button
-            onClick={handleSubmit}
-            className="rounded-lg bg-emerald-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
-          >
-            Finalizar examen
-          </button>
-        )}
+        <button
+          onClick={() => goTo(current + 1)}
+          disabled={current === total - 1}
+          className="rounded-lg bg-indigo-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-indigo-700 disabled:opacity-40"
+        >
+          Siguiente →
+        </button>
+      </div>
+
+      {/* Question card */}
+      <div className="relative">
+        <div
+          key={current}
+          className={`relative rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm ${
+            direction === 'next' ? 'animate-slide-from-right' : 'animate-slide-from-left'
+          }`}
+        >
+          <p className="mb-1 text-xs font-medium uppercase tracking-widest text-zinc-400">
+            Pregunta {current + 1} / {total}
+          </p>
+          <p className="mb-6 text-base font-medium leading-relaxed">{q.text}</p>
+
+          <ul className="space-y-2">
+            {q.options.map(opt => {
+              const selected = answers[q.number] === opt.letter;
+              return (
+                <li key={opt.letter}>
+                  <button
+                    onClick={() => select(opt.letter)}
+                    className={`flex w-full items-start gap-3 rounded-xl border px-4 py-3 text-left text-sm transition
+                      ${selected
+                        ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
+                        : 'border-zinc-200 hover:border-indigo-300 hover:bg-zinc-50'
+                      }`}
+                  >
+                    <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-xs font-semibold
+                      ${selected ? 'border-indigo-500 bg-indigo-500 text-white' : 'border-zinc-300 text-zinc-500'}`}>
+                      {opt.letter.toUpperCase()}
+                    </span>
+                    <span>{opt.text}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+
+      <div className="mt-4 flex justify-end">
+        <button
+          onClick={handleSubmit}
+          className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
+        >
+          Finalizar examen
+        </button>
       </div>
 
       {/* Question dots (mini navigator) */}
-      <div className="mt-8">
+      <div className="mt-4">
         <p className="mb-2 text-xs font-medium text-zinc-400 uppercase tracking-widest">Navegación rápida</p>
         <div className="flex flex-wrap gap-1.5">
           {questions.map((q2, idx) => (
             <button
               key={q2.number}
-              onClick={() => setCurrent(idx)}
+              onClick={() => goTo(idx)}
               className={`h-7 w-7 rounded-md text-xs font-semibold transition
                 ${idx === current
                   ? 'bg-indigo-600 text-white'
@@ -161,3 +170,4 @@ export default function Quiz({ exam, onSubmit, onBack }) {
     </div>
   );
 }
+
