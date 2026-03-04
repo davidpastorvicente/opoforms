@@ -50,7 +50,7 @@ Cada examen es un fichero `.md` dentro de `exams/`. El nombre del fichero es el 
 
 - Las preguntas deben estar numeradas (`1.`, `2.`, ...).
 - Cada opción va precedida por `* a)`, `* b)`, `* c)` o `* d)`.
-- El título se extrae del primer encabezado `#`, `##` o `###`.
+- El título se extrae del primer encabezado `#`.
 
 ## Formato de las soluciones
 
@@ -59,11 +59,11 @@ Mismo nombre que el examen, en la carpeta `solutions/`.
 ```
 1: a
 2: d
-3: ANULADA
+3: nula
 ```
 
 - Un par `número: letra` por línea.
-- Las preguntas anuladas se indican con `ANULADA` (o `nula`).
+- Las preguntas anuladas se indican con `nula` (insensible a mayúsculas).
 - Si una pregunta no aparece en el fichero de soluciones, se muestra como "Sin solución".
 
 ## Añadir un nuevo examen

@@ -53,7 +53,7 @@ Parser splits on `/\n(?=\d+\.\s)/`. Multi-line question text before the first `*
 2: b
 3: ANULADA
 ```
-`parseSolutions` lowercases all values. The string `"nula"` (lowercased `ANULADA`) marks an annulled question. A question number absent from the map means "no solution available" — distinct from annulled.
+`parseSolutions` lowercases all values. The string `"nula"` (case-insensitive, lowercased by the parser) marks an annulled question. A question number absent from the map means "no solution available" — distinct from annulled.
 
 ### Answer state
 `answers` is `{ [questionNumber]: letter }` stored in Quiz component state. Question numbers are integers from the parsed markdown (not array indices).

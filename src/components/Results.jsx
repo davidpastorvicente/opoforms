@@ -1,5 +1,3 @@
-const LETTER_LABELS = { a: 'A', b: 'B', c: 'C', d: 'D' };
-
 export default function Results({ exam, answers, onRestart, onBack }) {
   const { questions, solutions, title } = exam;
 
@@ -15,7 +13,7 @@ export default function Results({ exam, answers, onRestart, onBack }) {
     const userAns = answers[q.number];
     const correctAns = solutions?.[q.number];
 
-    if (correctAns === 'null') { annulled++; return; }
+    if (correctAns === 'nula') { annulled++; return; }
     if (hasSolutions && correctAns === undefined) { noSolutionCount++; return; }
     if (!userAns) { skipped++; return; }
     if (!hasSolutions) return;

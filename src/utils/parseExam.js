@@ -39,6 +39,6 @@ export function parseSolutions(text) {
 }
 
 export function getExamTitle(markdown, fallback) {
-  const m = markdown.match(/^#{1,3}\s+(.+)/m);
+  const m = markdown.match(/^#\s+(.+)/m);
   return m ? m[1].trim() : fallback;
 }
