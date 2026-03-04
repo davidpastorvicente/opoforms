@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+
+const SWIPE_THRESHOLD = 50; // px
 
 export default function Quiz({ exam, onSubmit, onBack }) {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState('next');
   const [answers, setAnswers] = useState({});
   const [showConfirm, setShowConfirm] = useState(false);
+  const touchStartX = useRef(null);
 
   const { questions, title } = exam;
   const q = questions[current];
@@ -28,6 +31,19 @@ export default function Quiz({ exam, onSubmit, onBack }) {
     } else {
       onSubmit(answers);
     }
+  }
+
+  function onTouchStart(e) {
+    touchStartX.current = e.touches[0].clientX;
+  }
+
+  function onTouchEnd(e) {
+    if (touchStartX.current === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(delta) < SWIPE_THRESHOLD) return;
+    if (delta < 0) goTo(current + 1); // swipe left → next
+    else goTo(current - 1);           // swipe right → prev
   }
 
   return (
@@ -73,7 +89,11 @@ export default function Quiz({ exam, onSubmit, onBack }) {
       </div>
 
       {/* Question card */}
-      <div className="relative">
+      <div
+        className="relative"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
         <div
           key={current}
           className={`relative rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm ${
