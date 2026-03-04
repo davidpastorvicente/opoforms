@@ -53,7 +53,7 @@ El fichero de soluciones lleva el **mismo nombre** que el examen y va en la carp
 ```
 
 - Un par `número: letra` por línea.
-- Las preguntas anuladas se indican con `null` (mayúsculas o minúsculas).
+- Las preguntas anuladas se indican con `nula` (mayúsculas o minúsculas).
 
 ## Añadir un nuevo examen
 

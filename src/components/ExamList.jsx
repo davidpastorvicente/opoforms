@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { listExams, loadExam } from '../examLoader.js';
 
-const exams = listExams();
-
 export default function ExamList({ onSelect }) {
+  const [exams, setExams] = useState([]);
   const [error, setError] = useState(null);
   const [starting, setStarting] = useState(null);
+
+  useEffect(() => {
+    listExams().then(setExams).catch(() => setError('No se pudieron cargar los exámenes.'));
+  }, []);
 
   async function handleSelect(name) {
     setStarting(name);
@@ -40,7 +43,7 @@ export default function ExamList({ onSelect }) {
             >
               <div>
                 <p className="font-semibold group-hover:text-indigo-600 transition-colors">
-                  {exam.name}
+                  {exam.title}
                 </p>
                 <p className="mt-0.5 text-sm text-zinc-400">
                   {exam.hasSolution ? 'Con soluciones' : 'Sin soluciones'}

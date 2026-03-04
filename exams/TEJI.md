@@ -1,6 +1,4 @@
-### CUESTIONARIO DE RESPUESTAS ALTERNATIVAS
-**CATEGORÍA PROFESIONAL: TÉCNICO/A ESPECIALISTA EN JARDÍN DE INFANCIA**
-**ACCESO LIBRE**
+# TEJI Octubre 2025
 
 1. El artículo de la Constitución que establece que la enseñanza básica es obligatoria y gratuita es...
     * a) Artículo 27.

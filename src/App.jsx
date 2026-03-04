@@ -42,7 +42,7 @@ export default function App() {
         </button>
       </header>
 
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      <main className="mx-auto max-w-5xl px-4 py-10">
         {view === 'list' && <ExamList onSelect={startExam} />}
         {view === 'quiz' && examData && (
           <Quiz exam={examData} onSubmit={submitQuiz} onBack={backToList} />

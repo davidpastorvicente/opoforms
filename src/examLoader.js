@@ -3,12 +3,16 @@ import { parseExam, parseSolutions, getExamTitle } from './utils/parseExam.js';
 const examFiles = import.meta.glob('/exams/*.md', { query: '?raw', import: 'default' });
 const solutionFiles = import.meta.glob('/solutions/*.md', { query: '?raw', import: 'default' });
 
-export function listExams() {
-  return Object.keys(examFiles).map(path => {
-    const name = path.replace('/exams/', '').replace('.md', '');
-    const hasSolution = `/solutions/${name}.md` in solutionFiles;
-    return { name, hasSolution };
-  });
+export async function listExams() {
+  return Promise.all(
+    Object.keys(examFiles).map(async path => {
+      const name = path.replace('/exams/', '').replace('.md', '');
+      const hasSolution = `/solutions/${name}.md` in solutionFiles;
+      const md = await examFiles[path]();
+      const title = getExamTitle(md, name);
+      return { name, title, hasSolution };
+    })
+  );
 }
 
 export async function loadExam(name) {

@@ -27,61 +27,65 @@ export default function Results({ exam, answers, onRestart, onBack }) {
   const pct = scored > 0 ? Math.round((correct / scored) * 100) : null;
 
   return (
-    <div>
-      {/* Summary card */}
-      <div className="mb-8 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
-        <h1 className="mb-1 text-2xl font-bold">{title}</h1>
-        <p className="mb-6 text-sm text-zinc-400">Resultados del examen</p>
+    <div className="md:grid md:grid-cols-3 md:gap-6 md:items-start">
 
-        {hasSolutions ? (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <Stat label="Correctas" value={correct} color="text-emerald-600" />
-            <Stat label="Incorrectas" value={wrong} color="text-red-500" />
-            <Stat label="Sin responder" value={skipped} color="text-zinc-400" />
-            {annulled > 0 && <Stat label="Anuladas" value={annulled} color="text-amber-500" />}
-          </div>
-        ) : (
-          <p className="text-sm text-zinc-400">Este examen no tiene soluciones — revisa tus respuestas abajo.</p>
-        )}
+      {/* Left: Summary card (sticky on desktop) */}
+      <div className="md:col-span-1 md:sticky md:top-6">
+        <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
+          <h1 className="mb-1 text-2xl font-bold">{title}</h1>
+          <p className="mb-6 text-sm text-zinc-400">Resultados del examen</p>
 
-        {pct !== null && (
-          <div className="mt-5">
-            <div className="mb-1 flex justify-between text-xs text-zinc-500">
-              <span>Aciertos</span>
-              <span>{pct}%</span>
+          {hasSolutions ? (
+            <div className="grid grid-cols-2 gap-3">
+              <Stat label="Correctas" value={correct} color="text-emerald-600" />
+              <Stat label="Incorrectas" value={wrong} color="text-red-500" />
+              <Stat label="Sin responder" value={skipped} color="text-zinc-400" />
+              {annulled > 0 && <Stat label="Anuladas" value={annulled} color="text-amber-500" />}
             </div>
-            <div className="h-2 w-full rounded-full bg-zinc-100">
-              <div
-                className={`h-2 rounded-full transition-all ${pct >= 60 ? 'bg-emerald-500' : 'bg-red-400'}`}
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-          </div>
-        )}
+          ) : (
+            <p className="text-sm text-zinc-400">Este examen no tiene soluciones — revisa tus respuestas abajo.</p>
+          )}
 
-        <div className="mt-6 flex gap-3">
-          <button
-            onClick={onRestart}
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition"
-          >
-            Repetir examen
-          </button>
-          <button
-            onClick={onBack}
-            className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium hover:bg-zinc-50 transition"
-          >
-            Otros exámenes
-          </button>
+          {pct !== null && (
+            <div className="mt-5">
+              <div className="mb-1 flex justify-between text-xs text-zinc-500">
+                <span>Aciertos</span>
+                <span>{pct}%</span>
+              </div>
+              <div className="h-2 w-full rounded-full bg-zinc-100">
+                <div
+                  className={`h-2 rounded-full transition-all ${pct >= 60 ? 'bg-emerald-500' : 'bg-red-400'}`}
+                  style={{ width: `${pct}%` }}
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="mt-6 flex flex-col gap-3">
+            <button
+              onClick={onRestart}
+              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition"
+            >
+              Repetir examen
+            </button>
+            <button
+              onClick={onBack}
+              className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium hover:bg-zinc-50 transition"
+            >
+              Otros exámenes
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Per-question review */}
-      <h2 className="mb-4 text-lg font-semibold">Revisión pregunta por pregunta</h2>
-      <div className="space-y-4">
+      {/* Right: Per-question review */}
+      <div className="mt-6 md:col-span-2 md:mt-0">
+        <h2 className="mb-4 text-lg font-semibold">Revisión pregunta por pregunta</h2>
+        <div className="space-y-4">
         {questions.map(q => {
           const userAns = answers[q.number];
           const correctAns = solutions?.[q.number];
-          const isAnnulled = correctAns === 'null';
+          const isAnnulled = correctAns === 'nula';
           const noSolution = hasSolutions && correctAns === undefined;
           const isCorrect = hasSolutions && !isAnnulled && !noSolution && userAns === correctAns;
           const isWrong = hasSolutions && !isAnnulled && !noSolution && userAns && userAns !== correctAns;
@@ -131,6 +135,8 @@ export default function Results({ exam, answers, onRestart, onBack }) {
           );
         })}
       </div>
+      </div>
+
     </div>
   );
 }
