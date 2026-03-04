@@ -15,8 +15,8 @@ No test or lint scripts exist.
 Fully static React + Vite SPA deployed to GitHub Pages. No backend. Exam data lives in markdown files bundled at **build time** via `import.meta.glob`.
 
 ```
-exams/        ← exam markdown files (e.g. TEJI.md)
-solutions/    ← matching solution files with same filename
+src/data/exams/    ← exam markdown files (e.g. TEJI.md)
+src/data/solutions/ ← matching solution files with same filename
 src/
   examLoader.js        ← entry point: listExams() / loadExam()
   utils/parseExam.js   ← pure parsers: parseExam, parseSolutions, getExamTitle

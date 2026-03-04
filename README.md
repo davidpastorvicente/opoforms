@@ -20,10 +20,11 @@ npm run preview   # previsualizar el build localmente
 
 ```
 opoForms/
-├── exams/               # Ficheros Markdown con los exámenes
-├── solutions/           # Ficheros Markdown con las soluciones (mismo nombre que el examen)
 ├── src/
-│   ├── examLoader.js    # Carga y parseo de exámenes (import.meta.glob)
+│   ├── data/
+│   │   ├── exams/           # Ficheros Markdown con los exámenes
+│   │   └── solutions/       # Ficheros Markdown con las soluciones (mismo nombre que el examen)
+│   ├── examLoader.js        # Carga y parseo de exámenes (import.meta.glob)
 │   ├── utils/parseExam.js
 │   ├── components/
 │   │   ├── ExamList.jsx
@@ -68,8 +69,8 @@ Mismo nombre que el examen, en la carpeta `solutions/`.
 
 ## Añadir un nuevo examen
 
-1. Crea `exams/NOMBRE.md` con el formato indicado.
-2. (Opcional) Crea `solutions/NOMBRE.md` con las respuestas.
+1. Crea `src/data/exams/NOMBRE.md` con el formato indicado.
+2. (Opcional) Crea `src/data/solutions/NOMBRE.md` con las respuestas.
 3. Haz `npm run build` — el examen aparece automáticamente. No hay que tocar el código.
 
 ## Despliegue
