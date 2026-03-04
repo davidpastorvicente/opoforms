@@ -63,7 +63,7 @@ export default function Quiz({ exam, onSubmit, onBack }) {
           onClick={handleSubmit}
           className="shrink-0 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
         >
-          Finalizar examen
+          Finalizar
         </button>
       </div>
 
