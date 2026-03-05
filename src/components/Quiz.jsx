@@ -49,7 +49,7 @@ export default function Quiz({ exam, onSubmit, onBack }) {
   return (
     <div>
       {/* Header: Volver / Finalizar full width */}
-      <div className="mb-4 flex items-center justify-between gap-4">
+      <div className="mb-6 flex items-center justify-between gap-4">
         <button onClick={onBack} className="shrink-0 rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium transition hover:bg-zinc-50">
           ← Volver
         </button>
