@@ -27,7 +27,7 @@ export default function ExamList({ onSelect }) {
   return (
     <div>
       <h1 className="mb-2 text-3xl font-bold">Exámenes disponibles</h1>
-      <p className="mb-8 text-zinc-500">Selecciona un examen para practicar.</p>
+      <p className="mb-8 text-zinc-500">Selecciona un examen para practicar</p>
 
       {exams.length === 0 && (
         <p className="text-zinc-400">No hay exámenes en la carpeta <code>exams/</code>.</p>
