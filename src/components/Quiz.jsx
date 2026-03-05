@@ -68,7 +68,6 @@ export default function Quiz({ exam, onSubmit, onBack }) {
         <div className="mt-6 md:mt-0 md:col-span-1 shrink-0">
           <h1 className="mb-1 text-2xl font-bold leading-tight">{title}</h1>
           <p className="mb-4 text-sm text-zinc-400">{answered} de {total} respondidas</p>
-          <p className="mb-2 text-xs font-medium text-zinc-400 uppercase tracking-widest">Navegación rápida</p>
           <div className="flex flex-wrap gap-1.5">
             {questions.map((q2, idx) => {
               const ans = answers[q2.number];
@@ -107,7 +106,7 @@ export default function Quiz({ exam, onSubmit, onBack }) {
         {/* Main content */}
         <div className="mt-6 flex-1 min-w-0 md:mt-0 md:col-span-2">
           {/* Progress bar */}
-          <div className="mb-8 h-1.5 w-full rounded-full bg-zinc-200">
+          <div className="mt-2 mb-6 h-1.5 w-full rounded-full bg-zinc-200">
             <div
               className="h-1.5 rounded-full bg-indigo-500 transition-all"
               style={{ width: `${progress}%` }}
@@ -195,14 +194,14 @@ export default function Quiz({ exam, onSubmit, onBack }) {
 
                     {hasResult && (
                       <p className={`mt-4 text-sm font-medium ${isCorrect ? 'text-emerald-600' : 'text-red-500'}`}>
-                        {isCorrect ? '¡Correcto!' : `Incorrecto — la respuesta correcta es ${correctAns.toUpperCase()}`}
+                        {isCorrect ? '¡Correcto!' : `Incorrecto — La respuesta correcta es la ${correctAns.toUpperCase()}`}
                       </p>
                     )}
                     {userAns && solutions && isAnnulled && (
-                      <p className="mt-4 text-sm font-medium text-amber-600">Esta pregunta está anulada.</p>
+                      <p className="mt-4 text-sm font-medium text-amber-600">Esta pregunta está anulada</p>
                     )}
                     {userAns && solutions && correctAns === undefined && (
-                      <p className="mt-4 text-sm text-zinc-400">No hay solución disponible para esta pregunta.</p>
+                      <p className="mt-4 text-sm text-zinc-400">No hay solución disponible para esta pregunta</p>
                     )}
                   </>
                 );

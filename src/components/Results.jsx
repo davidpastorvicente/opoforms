@@ -117,8 +117,8 @@ export default function Results({ exam, answers, onRestart, onBack }) {
                   let cls = 'border-zinc-100 bg-zinc-50 text-zinc-500';
                   if (isAnswer && isSelected) cls = 'border-emerald-400 bg-emerald-50 text-emerald-700 font-semibold';
                   else if (isAnswer) cls = 'border-emerald-300 bg-emerald-50 text-emerald-700 font-semibold';
-                  else if (isSelected && !isAnswer && !noSolution) cls = 'border-red-300 bg-red-50 text-red-600';
-                  else if (isSelected && noSolution) cls = 'border-indigo-200 bg-indigo-50 text-indigo-600';
+                  else if (isSelected && !isAnswer && !noSolution && !isAnnulled) cls = 'border-red-300 bg-red-50 text-red-600';
+                  else if (isSelected && (noSolution || isAnnulled)) cls = 'border-indigo-200 bg-indigo-50 text-indigo-600';
 
                   return (
                     <li key={opt.letter} className={`flex items-start gap-2 rounded-lg border px-3 py-2 text-xs ${cls}`}>
