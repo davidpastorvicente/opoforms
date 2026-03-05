@@ -52,7 +52,7 @@ export default function ExamList({ onSelect }) {
     (!filters.region.length || filters.region.includes(e.region)) &&
     (!filters.year.length   || filters.year.includes(e.year)) &&
     (!filters.type.length   || filters.type.includes(e.type))
-  );
+  ).sort((a, b) => (b.year ?? '').localeCompare(a.year ?? ''));
 
   const hasFilters = Object.values(filters).some(f => f.length);
 
