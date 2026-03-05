@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { listExams, loadExam } from '../examLoader.js';
+import Badge from './Badge.jsx';
 
 function unique(arr) { return [...new Set(arr.filter(Boolean))].sort(); }
 
@@ -82,10 +83,10 @@ export default function ExamList({ onSelect }) {
           <div className="mb-6 md:mb-0 md:col-span-1">
             <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm space-y-4">
               <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Filtros</p>
-              <FilterBar label="Oposición" options={unique(examsWithMeta.map(e => e.exam))}   active={filters.exam}   toggle={v => toggle('exam', v)} />
-              <FilterBar label="Región"    options={unique(examsWithMeta.map(e => e.region))} active={filters.region} toggle={v => toggle('region', v)} />
-              <FilterBar label="Año"       options={unique(examsWithMeta.map(e => e.year))}   active={filters.year}   toggle={v => toggle('year', v)} />
-              <FilterBar label="Tipo"      options={unique(examsWithMeta.map(e => e.type))}   active={filters.type}   toggle={v => toggle('type', v)} />
+              <FilterBar label="Oposición" options={unique(examsWithMeta.map(e => e.exam))}    active={filters.exam}   toggle={v => toggle('exam', v)} />
+              <FilterBar label="Año"       options={unique(examsWithMeta.map(e => e.year))}    active={filters.year}   toggle={v => toggle('year', v)} />
+              <FilterBar label="Región"    options={unique(examsWithMeta.map(e => e.region))}  active={filters.region} toggle={v => toggle('region', v)} />
+              <FilterBar label="Tipo"      options={unique(examsWithMeta.map(e => e.type))}    active={filters.type}   toggle={v => toggle('type', v)} />
               {hasFilters && (
                 <button onClick={() => setFilters({ exam: [], region: [], year: [], type: [] })} className="text-xs text-indigo-500 hover:underline">
                   Limpiar filtros
@@ -122,13 +123,10 @@ function ExamCard({ exam, starting, onSelect }) {
         className="group flex w-full items-center justify-between rounded-xl border border-zinc-200 bg-white px-5 py-4 text-left shadow-sm transition hover:border-indigo-400 hover:shadow-md disabled:opacity-60"
       >
         <div className="min-w-0">
-          <p className="font-semibold group-hover:text-indigo-600 transition-colors">
-            {exam.title}
-          </p>
-          <div className="mt-1.5 flex flex-wrap gap-1.5">
-            {exam.exam   && <Badge>{exam.exam}</Badge>}
-            {exam.region && <Badge>{exam.region}</Badge>}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-base font-bold text-zinc-800">{exam.exam ?? exam.title}</span>
             {exam.year   && <Badge>{exam.year}</Badge>}
+            {exam.region && <Badge>{exam.region}</Badge>}
             {exam.type   && <Badge color={exam.type === 'Ordinaria' ? 'blue' : 'amber'}>{exam.type}</Badge>}
             <Badge color={exam.hasSolution ? 'emerald' : 'zinc'}>
               {exam.hasSolution ? 'Con soluciones' : 'Sin soluciones'}
@@ -141,13 +139,4 @@ function ExamCard({ exam, starting, onSelect }) {
   );
 }
 
-function Badge({ children, color = 'zinc' }) {
-  const cls = {
-    zinc:    'bg-zinc-100 text-zinc-500',
-    emerald: 'bg-emerald-100 text-emerald-700',
-    blue:    'bg-blue-100 text-blue-700',
-    amber:   'bg-amber-100 text-amber-700',
-    indigo:  'bg-indigo-100 text-indigo-700',
-  }[color];
-  return <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${cls}`}>{children}</span>;
-}
+

@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import Badge from './Badge.jsx';
 
 const SWIPE_THRESHOLD = 50; // px
 
@@ -9,7 +10,7 @@ export default function Quiz({ exam, onSubmit, onBack }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const touchStartX = useRef(null);
 
-  const { questions, title, solutions } = exam;
+  const { questions, exam: examLabel, title, region, year, type, solutions } = exam;
   const q = questions[current];
   const total = questions.length;
   const answered = Object.keys(answers).length;
@@ -66,7 +67,12 @@ export default function Quiz({ exam, onSubmit, onBack }) {
 
         {/* Left sidebar: title + quick navigation */}
         <div className="mt-6 md:mt-0 md:col-span-1 shrink-0">
-          <h1 className="mb-1 text-2xl font-bold leading-tight">{title}</h1>
+          <h1 className="mb-1 text-2xl font-bold leading-tight">{examLabel ?? title}</h1>
+          <div className="mb-4 flex flex-wrap gap-1.5">
+            {year   && <Badge>{year}</Badge>}
+            {region && <Badge>{region}</Badge>}
+            {type   && <Badge color={type === 'Ordinaria' ? 'blue' : 'amber'}>{type}</Badge>}
+          </div>
           <p className="mb-4 text-sm text-zinc-400">{answered} de {total} respondidas</p>
           <div className="flex flex-wrap gap-1.5">
             {questions.map((q2, idx) => {

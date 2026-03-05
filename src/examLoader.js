@@ -9,15 +9,15 @@ const TYPE_LABELS = { ordinaria: 'Ordinaria', extraordinaria: 'Extraordinaria' }
 function parseMeta(name) {
   const parts = name.split('/');
   if (parts.length === 4) {
-    const [exam, region, year, type] = parts;
+    const [exam, year, region, type] = parts;
     return {
       exam: exam.toUpperCase(),
+      year: year,
       region: REGION_LABELS[region] ?? region.toUpperCase(),
-      year,
       type: TYPE_LABELS[type] ?? type,
     };
   }
-  return { exam: null, region: null, year: null, type: null };
+  return { exam: null, year: null, region: null, type: null };
 }
 
 export async function listExams() {
@@ -25,10 +25,10 @@ export async function listExams() {
     Object.keys(examFiles).map(async path => {
       const name = path.replace('/src/data/exams/', '').replace('.md', '');
       const hasSolution = `/src/data/solutions/${name}.md` in solutionFiles;
-      const md = await examFiles[path]();
-      const title = getExamTitle(md, name);
       const meta = parseMeta(name);
-      return { name, title, hasSolution, ...meta };
+      // For standalone exams (no path metadata), read the file to get the # title
+      const title = meta.exam ? null : getExamTitle(await examFiles[path](), name);
+      return { name, hasSolution, ...meta, title };
     })
   );
 }
@@ -39,7 +39,8 @@ export async function loadExam(name) {
 
   const examMd = await loader();
   const questions = parseExam(examMd);
-  const title = getExamTitle(examMd, name);
+  const meta = parseMeta(name);
+  const title = meta.exam ? null : getExamTitle(examMd, name);
 
   let solutions = null;
   const solLoader = solutionFiles[`/src/data/solutions/${name}.md`];
@@ -47,5 +48,5 @@ export async function loadExam(name) {
     solutions = parseSolutions(await solLoader());
   }
 
-  return { name, title, questions, solutions };
+  return { name, title, questions, solutions, ...meta };
 }
