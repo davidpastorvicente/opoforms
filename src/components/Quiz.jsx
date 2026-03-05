@@ -48,17 +48,11 @@ export default function Quiz({ exam, onSubmit, onBack }) {
 
   return (
     <div>
-      {/* Header */}
+      {/* Header: Volver / Finalizar full width */}
       <div className="mb-4 flex items-center justify-between gap-4">
-        <div>
-          <button onClick={onBack} className="mb-1 text-sm text-zinc-400 hover:text-zinc-700 transition-colors">
-            ← Volver
-          </button>
-          <h1 className="text-2xl font-bold leading-tight">{title}</h1>
-          <p className="mt-1 text-sm text-zinc-400">
-            {answered} de {total} respondidas
-          </p>
-        </div>
+        <button onClick={onBack} className="shrink-0 rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium transition hover:bg-zinc-50">
+          ← Volver
+        </button>
         <button
           onClick={handleSubmit}
           className="shrink-0 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
@@ -70,8 +64,10 @@ export default function Quiz({ exam, onSubmit, onBack }) {
       {/* Two-col on desktop, single col on mobile */}
       <div className="md:grid md:grid-cols-3 md:gap-6 md:items-start">
 
-        {/* Left sidebar: Quick navigation */}
+        {/* Left sidebar: title + quick navigation */}
         <div className="mt-6 md:mt-0 md:col-span-1 shrink-0">
+          <h1 className="mb-1 text-2xl font-bold leading-tight">{title}</h1>
+          <p className="mb-4 text-sm text-zinc-400">{answered} de {total} respondidas</p>
           <p className="mb-2 text-xs font-medium text-zinc-400 uppercase tracking-widest">Navegación rápida</p>
           <div className="flex flex-wrap gap-1.5">
             {questions.map((q2, idx) => {
@@ -245,4 +241,3 @@ export default function Quiz({ exam, onSubmit, onBack }) {
     </div>
   );
 }
-
