@@ -21,26 +21,34 @@ npm run preview   # previsualizar el build localmente
 ```
 opoForms/
 ├── src/
-│   ├── data/
-│   │   ├── exams/           # Ficheros Markdown con los exámenes
-│   │   └── solutions/       # Ficheros Markdown con las soluciones (mismo nombre que el examen)
-│   ├── examLoader.js        # Carga y parseo de exámenes (import.meta.glob)
-│   ├── utils/parseExam.js
+│   ├── data/                      # Submódulo git privado (opoforms-data)
+│   │   ├── exams/
+│   │   │   └── {exam}/{year}/{region}/{type}.md
+│   │   └── solutions/
+│   │       └── {exam}/{year}/{region}/{type}.md
+│   ├── examLoader.js              # listExams() / loadExam(), parseMeta()
+│   ├── utils/parseExam.js         # parseExam, parseSolutions, getExamTitle
 │   ├── components/
-│   │   ├── ExamList.jsx
-│   │   ├── Quiz.jsx
-│   │   └── Results.jsx
-│   └── App.jsx
+│   │   ├── ExamList.jsx           # Lista con filtros y badges
+│   │   ├── Badge.jsx              # Componente Badge reutilizable
+│   │   ├── Quiz.jsx               # Cuestionario interactivo
+│   │   └── Results.jsx            # Resumen y revisión de respuestas
+│   └── App.jsx                    # Máquina de estados: list → quiz → results
 ├── .github/workflows/deploy.yml
 └── vite.config.js
 ```
 
 ## Formato de los exámenes
 
-Cada examen es un fichero `.md` dentro de `exams/`. El nombre del fichero es el identificador.
+Los exámenes estructurados siguen la ruta `exams/{exam}/{year}/{region}/{type}.md` (p. ej. `exams/teji/2025/clm/ordinaria.md`). El título y los metadatos se derivan de la ruta — no hace falta un encabezado `#`.
+
+Opcionalmente, se pueden añadir metadatos como comentarios `##` al inicio del fichero (solo documentación, la app los ignora):
 
 ```markdown
-# Título del examen
+## Oposición: TEJI
+## Año: 2025
+## Región: Castilla La Mancha
+## Tipo: Ordinaria
 
 1. Texto de la pregunta...
     * a) Opción A
@@ -49,13 +57,20 @@ Cada examen es un fichero `.md` dentro de `exams/`. El nombre del fichero es el 
     * d) Opción D
 ```
 
+Los exámenes sin estructura de carpetas (p. ej. `exams/test.md`) pueden usar un encabezado `#` como título:
+
+```markdown
+# Título del examen
+
+1. ...
+```
+
 - Las preguntas deben estar numeradas (`1.`, `2.`, ...).
 - Cada opción va precedida por `* a)`, `* b)`, `* c)` o `* d)`.
-- El título se extrae del primer encabezado `#`.
 
 ## Formato de las soluciones
 
-Mismo nombre que el examen, en la carpeta `solutions/`.
+Mismo nombre y ruta que el examen, en la carpeta `solutions/`.
 
 ```
 1: a
@@ -69,9 +84,9 @@ Mismo nombre que el examen, en la carpeta `solutions/`.
 
 ## Añadir un nuevo examen
 
-1. Crea `src/data/exams/NOMBRE.md` con el formato indicado.
-2. (Opcional) Crea `src/data/solutions/NOMBRE.md` con las respuestas.
-3. Haz `npm run build` — el examen aparece automáticamente. No hay que tocar el código.
+1. Crea `src/data/exams/{exam}/{year}/{region}/{type}.md` con el formato indicado.
+2. (Opcional) Crea `src/data/solutions/{exam}/{year}/{region}/{type}.md` con las respuestas.
+3. Haz push al repo de datos — el deploy se lanza automáticamente. No hay que tocar el código.
 
 ## Despliegue
 
