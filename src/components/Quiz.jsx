@@ -151,6 +151,9 @@ export default function Quiz({ exam, onSubmit, onBack }) {
             >
               <p className="mb-1 text-xs font-medium uppercase tracking-widest text-zinc-400">
                 Pregunta {current + 1} / {total}
+                {q.source && (
+                  <span className="ml-2 normal-case text-zinc-300">· {q.source.year} {q.source.region} {q.source.type}</span>
+                )}
               </p>
               <p className="mb-6 text-base font-medium leading-relaxed">{q.text}</p>
 

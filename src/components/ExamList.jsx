@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { listExams, loadExam } from '../examLoader.js';
+import { listExams, loadExam, generateSimulacro } from '../examLoader.js';
 import Badge from './Badge.jsx';
 
 function unique(arr) { return [...new Set(arr.filter(Boolean))].sort(); }
@@ -57,6 +57,9 @@ export default function ExamList({ onSelect }) {
 
   const hasFilters = Object.values(filters).some(f => f.length);
 
+  // Unique oposiciones that have ≥2 exams (enough to make simulacro meaningful)
+  const oposiciones = unique(examsWithMeta.map(e => e.exam));
+
   async function handleSelect(name) {
     setStarting(name);
     try {
@@ -64,6 +67,19 @@ export default function ExamList({ onSelect }) {
       onSelect(data);
     } catch {
       setError('No se pudo cargar el examen.');
+    } finally {
+      setStarting(null);
+    }
+  }
+
+  async function handleSimulacro(examName) {
+    const key = `simulacro-${examName}`;
+    setStarting(key);
+    try {
+      const data = await generateSimulacro(examName);
+      onSelect(data);
+    } catch {
+      setError('No se pudo generar el simulacro.');
     } finally {
       setStarting(null);
     }
@@ -100,6 +116,9 @@ export default function ExamList({ onSelect }) {
         <div className={examsWithMeta.length > 0 ? 'md:col-span-2' : 'md:col-span-3'}>
           {exams.length === 0 && <p className="text-zinc-400">No hay exámenes disponibles.</p>}
           <ul className="space-y-3">
+            {!hasFilters && oposiciones.map(op => (
+              <SimulacroCard key={`sim-${op}`} examName={op} starting={starting} onSelect={handleSimulacro} />
+            ))}
             {filtered.map(exam => (
               <ExamCard key={exam.name} exam={exam} starting={starting} onSelect={handleSelect} />
             ))}
@@ -111,6 +130,32 @@ export default function ExamList({ onSelect }) {
 
       </div>
     </div>
+  );
+}
+
+function SimulacroCard({ examName, starting, onSelect }) {
+  const key = `simulacro-${examName}`;
+  const isLoading = starting === key;
+  return (
+    <li>
+      <button
+        onClick={() => onSelect(examName)}
+        disabled={!!starting}
+        className="group flex w-full items-center justify-between rounded-xl border-2 border-indigo-200 bg-indigo-50 px-5 py-4 text-left shadow-sm transition hover:border-indigo-400 hover:shadow-md disabled:opacity-60"
+      >
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-base font-bold text-indigo-800">{examName}</span>
+            <Badge color="indigo">Simulacro</Badge>
+            <Badge>80 preguntas aleatorias</Badge>
+          </div>
+          <p className="mt-1 text-xs text-indigo-500">Preguntas de todos los exámenes disponibles</p>
+        </div>
+        <span className="ml-4 shrink-0 text-indigo-300 group-hover:text-indigo-500 transition-colors text-lg">
+          {isLoading ? '…' : '→'}
+        </span>
+      </button>
+    </li>
   );
 }
 
