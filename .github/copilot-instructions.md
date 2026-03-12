@@ -1,5 +1,8 @@
 # Copilot Instructions
 
+## Git conventions
+- **Never** add `Co-authored-by: Copilot` trailers to commit messages.
+
 ## Commands
 
 ```bash

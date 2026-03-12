@@ -3,3 +3,10 @@ dist/
 node_modules/
 .DS_Store
 .env
+
+# Copilot CLI internals
+.github/prompts/
+.github/skills/
+
+# OpenSpec working directories (ephemeral)
+openspec/changes/

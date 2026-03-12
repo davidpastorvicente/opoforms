@@ -1,0 +1,52 @@
+schema: spec-driven
+
+context: |
+  ## Project: OpoForms
+  Web app for practicing Spanish civil service exams (oposiciones). Fully static React + Vite SPA deployed to GitHub Pages. No backend.
+
+  ## Tech stack
+  - React 18, Vite, Tailwind CSS
+  - No TypeScript (plain JS/JSX)
+  - No test or lint scripts
+  - Deployed via GitHub Actions to GitHub Pages
+
+  ## Architecture
+  - `src/examLoader.js` — entry point: listExams(), loadExam(), generateSimulacro(), parseMeta()
+  - `src/utils/parseExam.js` — pure parsers: parseExam, parseSolutions, getExamTitle
+  - `src/components/ExamList.jsx` — exam list with filter sidebar and metadata badges
+  - `src/components/Badge.jsx` — shared Badge component (colors: zinc/blue/amber/emerald/indigo)
+  - `src/components/Quiz.jsx` — interactive quiz with swipe, quick nav, inline feedback
+  - `src/components/Results.jsx` — summary card + per-question review, two-column layout
+  - `src/App.jsx` — view state machine: list → quiz → results
+  - Exam data lives in a private git submodule at src/data (repo: opoforms-data)
+
+  ## Data model
+  - Exam files: `src/data/exams/{exam}/{year}/{region}/{type}.md`
+  - Solution files: `src/data/solutions/{exam}/{year}/{region}/{type}.md`
+  - parseMeta(name) extracts { exam, year, region, type } from path
+  - `title` is null for structured exams (UI uses exam+badges); extracted from # heading for standalone
+  - solutions map: { [questionNumber]: letter | 'nula' }; absent key = no solution
+  - Simulacro: dynamically pools all questions for an oposición, shuffles, takes up to 80; questions carry a `source: { year, region, type }` field
+
+  ## Conventions
+  - Exam options: 4 choices a/b/c/d, no trailing periods
+  - Annulled questions: solution value is 'nula'
+  - Answer state: `{ [questionNumber]: letter }` (1-indexed integers, not array indices)
+  - Metadata ## lines in markdown are documentation only — ignored by parser
+  - base: './' in vite.config required for GitHub Pages subdirectory deployment
+  - No Co-authored-by trailers in git commits
+
+  ## Style
+  - Minimalist, modern UI
+  - Tailwind utility classes only (no custom CSS except keyframe animations in index.css)
+  - Badge colors: zinc=neutral, blue=Ordinaria, amber=Extraordinaria, emerald=has solutions, indigo=simulacro/no-solution
+
+rules:
+  proposal:
+    - Keep scope tight — this is a static SPA with no backend, proposals must stay within that constraint
+    - Prefer solutions that require no new dependencies
+    - Note any impact on the exam markdown format or data submodule
+  tasks:
+    - Each task should be independently completable
+    - Reference specific file paths (e.g. src/components/Quiz.jsx) where relevant
+    - Tasks that touch the data submodule (opoforms-data) must be listed separately
