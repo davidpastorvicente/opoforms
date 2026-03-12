@@ -51,7 +51,7 @@ export default function Quiz({ exam, onSubmit, onBack }) {
     <div>
       {/* Header: Volver / Finalizar full width */}
       <div className="mb-6 flex items-center justify-between gap-4">
-        <button onClick={onBack} className="shrink-0 rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium transition hover:bg-zinc-50">
+        <button onClick={onBack} className="shrink-0 rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium transition hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800">
           ← Volver
         </button>
         <button
@@ -73,7 +73,7 @@ export default function Quiz({ exam, onSubmit, onBack }) {
             {region && <Badge>{region}</Badge>}
             {type   && <Badge color={type === 'Ordinaria' ? 'blue' : 'amber'}>{type}</Badge>}
           </div>
-          <p className="mb-4 text-sm text-zinc-400">{answered} de {total} respondidas</p>
+          <p className="mb-4 text-sm text-zinc-400 dark:text-zinc-500">{answered} de {total} respondidas</p>
           <div className="flex flex-wrap gap-1.5">
             {questions.map((q2, idx) => {
               const ans = answers[q2.number];
@@ -85,15 +85,15 @@ export default function Quiz({ exam, onSubmit, onBack }) {
               if (idx === current) {
                 navCls = 'bg-indigo-600 text-white';
               } else if (!ans) {
-                navCls = 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200';
+                navCls = 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700';
               } else if (isAnnulled) {
-                navCls = 'bg-amber-100 text-amber-700';
+                navCls = 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300';
               } else if (noSolution) {
-                navCls = 'bg-zinc-300 text-zinc-600';
+                navCls = 'bg-zinc-300 text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400';
               } else if (ans === sol) {
-                navCls = 'bg-emerald-100 text-emerald-700';
+                navCls = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300';
               } else {
-                navCls = 'bg-red-100 text-red-600';
+                navCls = 'bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300';
               }
 
               return (
@@ -112,7 +112,7 @@ export default function Quiz({ exam, onSubmit, onBack }) {
         {/* Main content */}
         <div className="mt-6 flex-1 min-w-0 md:mt-0 md:col-span-2">
           {/* Progress bar */}
-          <div className="mt-2 mb-6 h-1.5 w-full rounded-full bg-zinc-200">
+          <div className="mt-2 mb-6 h-1.5 w-full rounded-full bg-zinc-200 dark:bg-zinc-700">
             <div
               className="h-1.5 rounded-full bg-indigo-500 transition-all"
               style={{ width: `${progress}%` }}
@@ -124,7 +124,7 @@ export default function Quiz({ exam, onSubmit, onBack }) {
             <button
               onClick={() => goTo(current - 1)}
               disabled={current === 0}
-              className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium transition hover:bg-zinc-100 disabled:opacity-40"
+              className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium transition hover:bg-zinc-100 disabled:opacity-40 dark:border-zinc-700 dark:hover:bg-zinc-800"
             >
               ← Anterior
             </button>
@@ -145,7 +145,7 @@ export default function Quiz({ exam, onSubmit, onBack }) {
           >
             <div
               key={current}
-              className={`relative rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm ${
+              className={`relative rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-900 ${
                 direction === 'next' ? 'animate-slide-from-right' : 'animate-slide-from-left'
               }`}
             >
@@ -172,11 +172,11 @@ export default function Quiz({ exam, onSubmit, onBack }) {
                         const isAnswer = hasResult && opt.letter === correctAns;
                         const isWrong = hasResult && selected && !isCorrect;
 
-                        let cls = 'border-zinc-200 hover:border-indigo-300 hover:bg-zinc-50';
-                        if (isAnswer && selected) cls = 'border-emerald-500 bg-emerald-50 text-emerald-700';
-                        else if (isAnswer) cls = 'border-emerald-400 bg-emerald-50 text-emerald-700';
-                        else if (isWrong) cls = 'border-red-400 bg-red-50 text-red-600';
-                        else if (selected && !hasResult) cls = 'border-indigo-500 bg-indigo-50 text-indigo-700';
+                        let cls = 'border-zinc-200 hover:border-indigo-300 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:border-indigo-500 dark:hover:bg-zinc-800';
+                        if (isAnswer && selected) cls = 'border-emerald-500 bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-500';
+                        else if (isAnswer) cls = 'border-emerald-400 bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-400';
+                        else if (isWrong) cls = 'border-red-400 bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-300 dark:border-red-400';
+                        else if (selected && !hasResult) cls = 'border-indigo-500 bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300 dark:border-indigo-500';
 
                         let dotCls = 'border-zinc-300 text-zinc-500';
                         if (isAnswer) dotCls = 'border-emerald-500 bg-emerald-500 text-white';
@@ -210,7 +210,7 @@ export default function Quiz({ exam, onSubmit, onBack }) {
                       <p className="mt-4 text-sm font-medium text-amber-600">Esta pregunta está anulada</p>
                     )}
                     {userAns && solutions && correctAns === undefined && (
-                      <p className="mt-4 text-sm text-zinc-400">No hay solución disponible para esta pregunta</p>
+                      <p className="mt-4 text-sm text-zinc-400 dark:text-zinc-500">No hay solución disponible para esta pregunta</p>
                     )}
                   </>
                 );
@@ -224,15 +224,15 @@ export default function Quiz({ exam, onSubmit, onBack }) {
       {/* Confirm modal */}
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="mx-4 w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
+          <div className="mx-4 w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl dark:bg-zinc-900 dark:border dark:border-zinc-700">
             <h2 className="mb-2 text-lg font-semibold">¿Finalizar el examen?</h2>
-            <p className="mb-6 text-sm text-zinc-500">
+            <p className="mb-6 text-sm text-zinc-500 dark:text-zinc-400">
               Tienes {total - answered} {total - answered === 1 ? 'pregunta sin responder' : 'preguntas sin responder'}.
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setShowConfirm(false)}
-                className="flex-1 rounded-lg border border-zinc-200 py-2 text-sm font-medium hover:bg-zinc-50 transition"
+                className="flex-1 rounded-lg border border-zinc-200 py-2 text-sm font-medium hover:bg-zinc-50 transition dark:border-zinc-700 dark:hover:bg-zinc-800"
               >
                 Seguir
               </button>

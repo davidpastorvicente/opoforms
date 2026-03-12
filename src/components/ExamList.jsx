@@ -17,7 +17,7 @@ function FilterBar({ label, options, active, toggle }) {
           className={`rounded-full px-3 py-1 text-xs font-medium transition border ${
             active.includes(opt)
               ? 'bg-indigo-600 text-white border-indigo-600'
-              : 'bg-white text-zinc-600 border-zinc-200 hover:border-indigo-300'
+              : 'bg-white text-zinc-600 border-zinc-200 hover:border-indigo-300 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700 dark:hover:border-indigo-500'
           }`}
         >
           {opt}
@@ -90,15 +90,15 @@ export default function ExamList({ onSelect }) {
   return (
     <div>
       <h1 className="mb-2 text-3xl font-bold">Exámenes disponibles</h1>
-      <p className="mb-6 text-zinc-500">Selecciona un examen para practicar</p>
+      <p className="mb-6 text-zinc-500 dark:text-zinc-400">Selecciona un examen para practicar</p>
 
       <div className="md:grid md:grid-cols-3 md:gap-6 md:items-start">
 
         {/* Left: Filters */}
         {examsWithMeta.length > 0 && (
           <div className="mb-6 md:mb-0 md:col-span-1">
-            <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm space-y-4">
-              <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Filtros</p>
+            <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm space-y-4 dark:border-zinc-700 dark:bg-zinc-900">
+              <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest dark:text-zinc-400">Filtros</p>
               <FilterBar label="Oposición" options={unique(examsWithMeta.map(e => e.exam))}    active={filters.exam}   toggle={v => toggle('exam', v)} />
               <FilterBar label="Año"       options={unique(examsWithMeta.map(e => e.year))}    active={filters.year}   toggle={v => toggle('year', v)} />
               <FilterBar label="Región"    options={unique(examsWithMeta.map(e => e.region))}  active={filters.region} toggle={v => toggle('region', v)} />
@@ -141,15 +141,15 @@ function SimulacroCard({ examName, starting, onSelect }) {
       <button
         onClick={() => onSelect(examName)}
         disabled={!!starting}
-        className="group flex w-full items-center justify-between rounded-xl border-2 border-indigo-200 bg-indigo-50 px-5 py-4 text-left shadow-sm transition hover:border-indigo-400 hover:shadow-md disabled:opacity-60"
+        className="group flex w-full items-center justify-between rounded-xl border-2 border-indigo-200 bg-indigo-50 px-5 py-4 text-left shadow-sm transition hover:border-indigo-400 hover:shadow-md disabled:opacity-60 dark:border-indigo-800 dark:bg-indigo-950"
       >
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-base font-bold text-indigo-800">{examName}</span>
+            <span className="text-base font-bold text-indigo-800 dark:text-indigo-300">{examName}</span>
             <Badge color="indigo">Simulacro</Badge>
             <Badge>80 preguntas aleatorias</Badge>
           </div>
-          <p className="mt-1 text-xs text-indigo-500">Preguntas de todos los exámenes disponibles</p>
+          <p className="mt-1 text-xs text-indigo-500 dark:text-indigo-400">Preguntas de todos los exámenes disponibles</p>
         </div>
         <span className="ml-4 shrink-0 text-indigo-300 group-hover:text-indigo-500 transition-colors text-lg">
           {isLoading ? '…' : '→'}
@@ -165,11 +165,11 @@ function ExamCard({ exam, starting, onSelect }) {
       <button
         onClick={() => onSelect(exam.name)}
         disabled={starting === exam.name}
-        className="group flex w-full items-center justify-between rounded-xl border border-zinc-200 bg-white px-5 py-4 text-left shadow-sm transition hover:border-indigo-400 hover:shadow-md disabled:opacity-60"
+        className="group flex w-full items-center justify-between rounded-xl border border-zinc-200 bg-white px-5 py-4 text-left shadow-sm transition hover:border-indigo-400 hover:shadow-md disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-indigo-500"
       >
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-base font-bold text-zinc-800">{exam.exam ?? exam.title}</span>
+            <span className="text-base font-bold text-zinc-800 dark:text-zinc-100">{exam.exam ?? exam.title}</span>
             {exam.year   && <Badge>{exam.year}</Badge>}
             {exam.region && <Badge>{exam.region}</Badge>}
             {exam.type   && <Badge color={exam.type === 'Ordinaria' ? 'blue' : 'amber'}>{exam.type}</Badge>}
@@ -178,7 +178,7 @@ function ExamCard({ exam, starting, onSelect }) {
             </Badge>
           </div>
         </div>
-        <span className="ml-4 shrink-0 text-zinc-300 group-hover:text-indigo-400 transition-colors text-lg">→</span>
+        <span className="ml-4 shrink-0 text-zinc-300 group-hover:text-indigo-400 transition-colors text-lg dark:text-zinc-600 dark:group-hover:text-indigo-400">→</span>
       </button>
     </li>
   );
