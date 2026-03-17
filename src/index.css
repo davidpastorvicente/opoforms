@@ -6,6 +6,11 @@ html {
   scroll-behavior: smooth;
 }
 
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 @keyframes slide-from-right {
   from { opacity: 0; transform: translateX(48px) scale(0.98); }
   to   { opacity: 1; transform: translateX(0)    scale(1); }
@@ -16,10 +21,28 @@ html {
   to   { opacity: 1; transform: translateX(0)     scale(1); }
 }
 
+@keyframes slide-to-left {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to   { opacity: 0; transform: translateX(-32px) scale(0.98); }
+}
+
+@keyframes slide-to-right {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to   { opacity: 0; transform: translateX(32px) scale(0.98); }
+}
+
 .animate-slide-from-right {
   animation: slide-from-right 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .animate-slide-from-left {
   animation: slide-from-left 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-slide-to-left {
+  animation: slide-to-left 0.15s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+
+.animate-slide-to-right {
+  animation: slide-to-right 0.15s cubic-bezier(0.55, 0, 1, 0.45) forwards;
 }

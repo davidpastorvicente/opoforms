@@ -29,8 +29,8 @@ export default function Results({ exam, answers, onRestart, onBack }) {
 
       {/* Left: Summary card (sticky on desktop) */}
       <div className="md:col-span-1 md:sticky md:top-6">
-        <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
-          <h1 className="mb-1 text-2xl font-bold">{title}</h1>
+        <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-card dark:border-zinc-700 dark:bg-zinc-900">
+          <h1 className="mb-1 text-2xl font-bold text-balance">{title}</h1>
           <p className="mb-6 text-sm text-zinc-400 dark:text-zinc-500">Resultados del examen</p>
 
           {hasSolutions ? (
@@ -62,13 +62,13 @@ export default function Results({ exam, answers, onRestart, onBack }) {
           <div className="mt-6 flex flex-col gap-3">
             <button
               onClick={onRestart}
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition"
+              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 active:scale-[0.98] transition"
             >
               Repetir examen
             </button>
             <button
               onClick={onBack}
-              className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium hover:bg-zinc-50 transition dark:border-zinc-700 dark:hover:bg-zinc-800"
+              className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium hover:bg-zinc-50 active:scale-[0.98] transition dark:border-zinc-700 dark:hover:bg-zinc-800"
             >
               Otros exámenes
             </button>
@@ -78,7 +78,7 @@ export default function Results({ exam, answers, onRestart, onBack }) {
 
       {/* Right: Per-question review */}
       <div className="mt-6 md:col-span-2 md:mt-0">
-        <h2 className="mb-4 text-lg font-semibold">Revisión pregunta por pregunta</h2>
+        <h2 className="mb-4 text-lg font-semibold text-balance">Revisión pregunta por pregunta</h2>
         <div className="space-y-4">
         {questions.map(q => {
           const userAns = answers[q.number];
@@ -142,7 +142,7 @@ export default function Results({ exam, answers, onRestart, onBack }) {
 function Stat({ label, value, color }) {
   return (
     <div className="rounded-xl bg-zinc-50 p-3 text-center dark:bg-zinc-800">
-      <p className={`text-2xl font-bold ${color}`}>{value}</p>
+      <p className={`text-2xl font-bold tabular-nums ${color}`}>{value}</p>
       <p className="mt-0.5 text-xs text-zinc-400 dark:text-zinc-500">{label}</p>
     </div>
   );

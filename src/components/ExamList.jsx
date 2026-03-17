@@ -89,7 +89,7 @@ export default function ExamList({ onSelect }) {
 
   return (
     <div>
-      <h1 className="mb-2 text-3xl font-bold">Exámenes disponibles</h1>
+      <h1 className="mb-2 text-3xl font-bold text-balance">Exámenes disponibles</h1>
       <p className="mb-6 text-zinc-500 dark:text-zinc-400">Selecciona un examen para practicar</p>
 
       <div className="md:grid md:grid-cols-3 md:gap-6 md:items-start">
@@ -97,7 +97,7 @@ export default function ExamList({ onSelect }) {
         {/* Left: Filters */}
         {examsWithMeta.length > 0 && (
           <div className="mb-6 md:mb-0 md:col-span-1">
-            <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm space-y-4 dark:border-zinc-700 dark:bg-zinc-900">
+            <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-card space-y-4 dark:border-zinc-700 dark:bg-zinc-900">
               <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest dark:text-zinc-400">Filtros</p>
               <FilterBar label="Oposición" options={unique(examsWithMeta.map(e => e.exam))}    active={filters.exam}   toggle={v => toggle('exam', v)} />
               <FilterBar label="Año"       options={unique(examsWithMeta.map(e => e.year))}    active={filters.year}   toggle={v => toggle('year', v)} />
@@ -141,7 +141,7 @@ function SimulacroCard({ examName, starting, onSelect }) {
       <button
         onClick={() => onSelect(examName)}
         disabled={!!starting}
-        className="group flex w-full items-center justify-between rounded-xl border-2 border-indigo-200 bg-indigo-50 px-5 py-4 text-left shadow-sm transition hover:border-indigo-400 hover:shadow-md disabled:opacity-60 dark:border-indigo-800 dark:bg-indigo-950"
+        className="group flex w-full items-center justify-between rounded-xl border-2 border-indigo-200 bg-indigo-50 px-5 py-4 text-left shadow-card transition hover:border-indigo-400 hover:shadow-card-hover active:scale-[0.98] disabled:opacity-60 dark:border-indigo-800 dark:bg-indigo-950"
       >
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -165,7 +165,7 @@ function ExamCard({ exam, starting, onSelect }) {
       <button
         onClick={() => onSelect(exam.name)}
         disabled={starting === exam.name}
-        className="group flex w-full items-center justify-between rounded-xl border border-zinc-200 bg-white px-5 py-4 text-left shadow-sm transition hover:border-indigo-400 hover:shadow-md disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-indigo-500"
+        className="group flex w-full items-center justify-between rounded-xl border border-zinc-200 bg-white px-5 py-4 text-left shadow-card transition hover:border-indigo-400 hover:shadow-card-hover active:scale-[0.98] disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-indigo-500"
       >
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
